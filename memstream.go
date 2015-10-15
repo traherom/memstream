@@ -8,7 +8,6 @@ package memstream
 
 import (
 	"errors"
-	"fmt"
 	"io"
 )
 
@@ -91,8 +90,6 @@ func (m *MemoryStream) Write(p []byte) (n int, err error) {
 
 		copy(newBuff, m.buff)
 
-		fmt.Printf("Expanded to %v bytes from %v\n", cap(newBuff), cap(m.buff))
-
 		m.buff = newBuff
 	}
 
@@ -104,4 +101,12 @@ func (m *MemoryStream) Write(p []byte) (n int, err error) {
 	}
 
 	return n, nil
+}
+
+// Bytes returns a copy of ALL valid bytes in the stream, regardless of the current
+// position.
+func (m *MemoryStream) Bytes() []byte {
+	b := make([]byte, len(m.buff))
+	copy(b, m.buff)
+	return b
 }

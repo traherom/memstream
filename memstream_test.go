@@ -14,8 +14,8 @@ func TestRead(t *testing.T) {
 
 	// Empty read check
 	n, err := s.Read(buff)
-	if err != nil && err != io.EOF {
-		t.Errorf("Empty read failed: %v", err)
+	if err != io.EOF {
+		t.Errorf("Empty read failed, should have reported EOF. Error returned was %v", err)
 	}
 	if n != 0 {
 		t.Errorf("Should have read 0 bytes, got %v", n)
@@ -122,5 +122,24 @@ func TestSeek(t *testing.T) {
 	}
 	if pos != int64(len(toWrite)) {
 		t.Errorf("Position read via seek is not %v, got %v", len(toWrite), pos)
+	}
+}
+
+func TestBytes(t *testing.T) {
+	toWrite := []byte("abcdefg")
+	s := New()
+
+	// Write
+	n, err := s.Write(toWrite)
+	if err != nil {
+		t.Errorf("Error writing: %v", err)
+	}
+	if n != len(toWrite) {
+		t.Errorf("Did not write enough bytes (wrote %v, should have written %v)", n, len(toWrite))
+	}
+
+	written := s.Bytes()
+	if !bytes.Equal(toWrite, written) {
+		t.Error("Bytes() output did not match written bytes")
 	}
 }
