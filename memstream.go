@@ -6,7 +6,8 @@ import (
 	"io"
 )
 
-// MemoryStream is a memory-based, automatically resizing
+// MemoryStream is a memory-based, automatically resizing stream that can
+// easily fill the role of any file-based IO.
 type MemoryStream struct {
 	buff []byte
 	loc  int
