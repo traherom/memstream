@@ -1,4 +1,4 @@
-// Memstream is an expandable ReadWriteSeeker for Golang that works with an
+// Package memstream is an expandable ReadWriteSeeker for Golang that works with an
 // internally managed byte buffer. Operation is usage is intended to be seamless
 // and smooth.
 //
