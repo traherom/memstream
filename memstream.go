@@ -1,3 +1,9 @@
+// Memstream is an expandable ReadWriteSeeker for Golang that works with an
+// internally managed byte buffer. Operation is usage is intended to be seamless
+// and smooth.
+//
+// In situations where the maximum read/write sizes are known, a fixed
+// []byte/byte buffer will likely offer better performance.
 package memstream
 
 import (
