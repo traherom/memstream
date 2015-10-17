@@ -94,7 +94,7 @@ func TestWrite(t *testing.T) {
 }
 
 func TestSeek(t *testing.T) {
-	toWrite := []byte("abcdefg")
+	toWrite := []byte("abcdefghijklmnopqrstuvwxyz")
 	s := New()
 
 	// Get position via seek
@@ -116,12 +116,40 @@ func TestSeek(t *testing.T) {
 	}
 
 	// Get position via seek
-	pos, err = s.Seek(0, 1)
+	postWritePos, err := s.Seek(0, 1)
 	if err != nil {
 		t.Errorf("Error getting current position: %v", err)
 	}
-	if pos != int64(len(toWrite)) {
+	if postWritePos != int64(len(toWrite)) {
 		t.Errorf("Position read via seek is not %v, got %v", len(toWrite), pos)
+	}
+
+	// Reposition back 3 bytes
+	_, err = s.Seek(-3, 1)
+	if err != nil {
+		t.Errorf("Error moving relatively: %v", err)
+	}
+
+	postOffsetPos, err := s.Seek(0, 1)
+	if err != nil {
+		t.Errorf("Error getting current position: %v", err)
+	}
+	if postOffsetPos != postWritePos-3 {
+		t.Errorf("Seek via offset incorrect (got %v, expected %v)", postOffsetPos, postWritePos-3)
+	}
+
+	// Just to end-3
+	_, err = s.Seek(3, 2)
+	if err != nil {
+		t.Errorf("Error moving from end: %v", err)
+	}
+
+	postEndSeekPos, err := s.Seek(0, 1)
+	if err != nil {
+		t.Errorf("Error getting current position: %v", err)
+	}
+	if postOffsetPos != int64(len(toWrite)-3) {
+		t.Errorf("Seek via end incorrect (got %v, expected %v)", postEndSeekPos, len(toWrite)-3)
 	}
 }
 

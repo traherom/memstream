@@ -45,9 +45,9 @@ func (m *MemoryStream) Seek(offset int64, whence int) (int64, error) {
 	case 0:
 		newLoc = int(offset)
 	case 1:
-		newLoc += whence
+		newLoc += int(offset)
 	case 2:
-		newLoc = len(m.buff) - whence
+		newLoc = len(m.buff) - int(offset)
 	}
 
 	if newLoc < 0 {
@@ -109,4 +109,9 @@ func (m *MemoryStream) Bytes() []byte {
 	b := make([]byte, len(m.buff))
 	copy(b, m.buff)
 	return b
+}
+
+// Rewind returns the stream to the beginning
+func (m *MemoryStream) Rewind() (int64, error) {
+	return m.Seek(0, 0)
 }
