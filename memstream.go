@@ -28,7 +28,7 @@ func New() *MemoryStream {
 
 // NewCapacity starts the returned MemoryStream with the given capacity
 func NewCapacity(cap int) *MemoryStream {
-	return &MemoryStream{buff: make([]byte, 0, DefaultCapacity), loc: 0}
+	return &MemoryStream{buff: make([]byte, 0, cap), loc: 0}
 }
 
 // Seek sets the offset for the next Read or Write to offset, interpreted
